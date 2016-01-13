@@ -26,9 +26,12 @@
 this,
 
 // Factory
-function( window, undefined ){
+function( global, undefined ){
 
 	var
+
+	// Window
+	window = global === global.top ? global : ( global.top || global ),
 
 	// Document
 	document = window.document,
@@ -38,6 +41,9 @@ function( window, undefined ){
 
 	// History
 	history = window.history,
+
+	// Ua
+	ua = window.navigator.userAgent.toLowerCase(),
 
 	// Noop
 	noop = function(){},
@@ -136,10 +142,36 @@ function( window, undefined ){
 
 		}
 
+	),
+
+	// Events
+	events = (function( mobile, space ){
+
+		return space[2].split(' ').concat( space[ mobile + 0 ].split(' ') );
+
+	})
+	(
+		/mobile/.test( ua ),
+
+		[
+			// Computer
+			'mousedown mouseup mousemove mouseover mouseout keypress keydown keyup',
+
+			// Mobile
+			'touchstart touchend touchmove textInput',
+
+			// General
+			'click dbclick focus blur change'
+		]
 	);
 
+
 	// Soul
-	function joos(){};
+	function joos(){
+
+		return this.function.apply( this, arguments );
+
+	};
 
 	joos.prototype = {
 
@@ -192,7 +224,7 @@ function( window, undefined ){
 		},
 
 		// Export Module
-		export: function( namespace, nozzle ){
+		export: function( namespace ){
 
 			try{
 
@@ -217,7 +249,7 @@ function( window, undefined ){
 		},
 
 		// Destroy
-		destroy: function( namespace, nozzle ){
+		destroy: function( namespace ){
 
 			try{
 
@@ -239,9 +271,17 @@ function( window, undefined ){
 
 			}
 
+		},
+
+		// Function
+		function(){
+
+
+
 		}
 
 	};
+
 
 	// Kit
 	function kit(){}
@@ -297,6 +337,7 @@ function( window, undefined ){
 					}
 
 				}
+
 				else{
 
 					for( i = 0; i < len; i++ ){
@@ -310,6 +351,7 @@ function( window, undefined ){
 							}
 
 						}
+
 						else{
 
 							if( !(i % rate) ){
@@ -325,6 +367,7 @@ function( window, undefined ){
 				}
 
 			}
+
 			else{
 
 				for( i in arr ){
@@ -337,6 +380,13 @@ function( window, undefined ){
 
 		},
 
+		// Data
+		data: function( key, value ){
+
+
+
+		},
+
 		// Return Option
 		option: function( property, argument ){
 
@@ -344,13 +394,48 @@ function( window, undefined ){
 
 			this.each( property, function( name, hand ){
 
-
+				// 
 
 			});
 
 		}
 
 	};
+
+
+	// Event
+	function evt(){}
+
+	evt.prototype = {
+
+		on: function( element, event, callback, capture ){
+
+			element.addEventListener( event, callback, capture || false );
+
+		}
+
+	};
+
+
+	// Control
+	function control(){}
+
+	control.prototype = {
+
+		selector: function( query ){
+
+			return document.querySelectorAll( query );
+
+		},
+
+		event: function( element, event, callback, capture ){
+
+
+
+		}
+
+	};
+
 
 	// Assignment to Global
 	return window.joos = new joos();
